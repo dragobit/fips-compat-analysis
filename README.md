@@ -27,6 +27,7 @@
 | [reports/03-divergence-matrix.md](reports/03-divergence-matrix.md) | 本家 vs フォーク vs TS の機能・拡張差分マトリクス |
 | [reports/04-compat-hazards.md](reports/04-compat-hazards.md) | 実害のある互換性ハザードと回避策のチェックリスト |
 | [reports/05-adoption-verdict.md](reports/05-adoption-verdict.md) | mmalmi 系ライブラリ採用可否の判定・条件・推奨構成 |
+| [reports/06-fips-big-picture.md](reports/06-fips-big-picture.md) | 【超大作】FIPS の本質・技術史的位置づけ・できること・限界・将来シナリオ |
 
 ## 結論の要約(TL;DR)
 
