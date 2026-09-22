@@ -29,6 +29,11 @@
 | [reports/05-adoption-verdict.md](reports/05-adoption-verdict.md) | mmalmi 系ライブラリ採用可否の判定・条件・推奨構成 |
 | [reports/06-fips-big-picture.md](reports/06-fips-big-picture.md) | 【超大作】FIPS の本質・技術史的位置づけ・できること・限界・将来シナリオ |
 | [reports/07-usecase-home-pc-and-phone.md](reports/07-usecase-home-pc-and-phone.md) | 実践ユースケース: 自宅PC × 外出スマホを FIPS(nostr-vpn)で繋ぐ方法と限界 |
+| [reports/08-personal-and-multi-site.md](reports/08-personal-and-multi-site.md) | ユースケース集A: 家族デバイス網・自宅NAS公開・複数拠点一元化 |
+| [reports/09-offline-resilient-mesh.md](reports/09-offline-resilient-mesh.md) | ユースケース集B: 災害コミュニティ網・離島船舶・ISP不要ローカル網 |
+| [reports/10-nostr-services-and-agents.md](reports/10-nostr-services-and-agents.md) | ユースケース集C: AIエージェント/DVM・npub宛サービス・出口市場 |
+| [reports/11-browser-sensor-embedded.md](reports/11-browser-sensor-embedded.md) | ユースケース集D: ブラウザP2Pアプリ・センサー網・ロボット |
+| [reports/12-fips-or-nvpn.md](reports/12-fips-or-nvpn.md) | ユースケース集E: 「FIPSかnostr-vpnか」の判断・影のインターネット |
 
 ## 結論の要約(TL;DR)
 
