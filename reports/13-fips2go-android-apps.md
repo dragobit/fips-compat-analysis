@@ -674,7 +674,33 @@ Android エミュレータに fips2go v0.7.0 と各アプリを入れ、ホス�
 - **手動指定が弱い/できないもの(→そのままでは厳しい)**: Element(HTTPS 必須のため `.fips` 向け証明書が無理)、マルチキャスト発見だけに頼るアプリ(メッシュ越しの発見は効かない — LocalSend も discovery は通らないが favorites の手動登録という逃げ道がある)。アプリによっては接続先を「検出から選ぶしかない」ものがあり、そこは実際に開いて試すしかない。
 - **もう1つの落とし穴**: `.fips` DNS は AAAA(IPv6)しか返さない。IPv4 の A レコードしか引かないアプリは名前解決で死ぬので、**IPv6 リテラル直打ちが最も確実な指定方法**。
 
-検証環境: エミュレータ側 npub `npub1l7aph…`(fd5d:…:f127)、ホスト側 `npub1hl0dnkk…`(fd72:…:8837)。fips2go の Battery saver は既定 ON でリンクが切れやすいため、実測時は OFF を推奨(実機でも長時間接続なら同じ落とし穴がある)。
+#### 検証環境(実測セットアップ)
+
+構成は「Android エミュレータ上の fips2go + 各アプリ」⇄「ホスト Linux 上の fips デーモン + 各種サービス」を 1 対 1 でピアリングしたもの。PC 上で完結させるために実機の代わりにエミュレータを使った点に注意(カメラ/マイク/電話系の機能はエミュレータでは再現できず、特に SIP 通話の成否はこれに影響した可能性がある)。
+
+**ホスト側(Linux VM、Ubuntu 22.04)**
+
+- fips デーモン: TUN `fips0`(MTU 1280)、メッシュ IPv6 `fd72:a686:6d2f:178b:9419:bd1a:b14c:8837`、身元 npub `npub1hl0dnkk…mhz`
+- UDP トランスポート `0.0.0.0:2121` で受付、設定 `/etc/fips/fips.yaml`(`peers: []` で受動側)
+- メッシュ IPv6 に bind したサービス群:
+  - murmur 1.3.4(Mumble サーバ): TCP+UDP `64738`
+  - ntfy `--listen-http "[fd72:…]:8081"`: HTTP `8081`
+  - baresip(SIP UA): UDP `5070`。手前に簡易プロキシ(python)を `:5060` に置き、REGISTER へ `200 OK` を返す + INVITE を転送(※ baresip はレジストラではないため、Linphone の登録要求に応答させる目的で導入)
+  - 簡易 LocalSend 受信器(python、自己署名 TLS): HTTPS `53317`。`/api/localsend/v2/info`/`register`/`prepare-upload`/`upload` を応答するだけのスタブ
+
+**エミュレータ側(Android x86_64、AVD)**
+
+- fips2go v0.7.0(`org.fips.android`) + テスト対象アプリ(Termux、primitive ftpd、ntfy、Linphone、mumla、LocalSend)
+- 身元 npub `npub1l7aph…uv2l` → メッシュ IPv6 `fd5d:d904:1360:2fbd:3575:67fe:a871:f127`(tun1:1 には別途 IPv4 `10.111.222.1` もあるがメッシュ経路ではない)
+- ピアリング方法: ブートストラップピアに **カスタム `10.0.2.2:2121`(UDP)** を手動設定。`10.0.2.2` は Android エミュレータから見たホストのループバック別名で、これでホストの fips デーモンと直接ピアした
+- fips2go 設定: Battery saver **OFF**(既定 ON だとタイマー緩和でリンクが断続しテスト不能になる)、インバウンド許可リスト `12345,1234,46687`(ftpd の SFTP/FTP・Linphone のリッスンポート)、スプリットトンネル ON、メッシュ対象は選択したアプリのみ(8アプリ)
+- 名前解決: fips2go 内蔵 `.fips` DNS が `npub1….fips` → AAAA(fd00::/8)を返す(IPv4 の A クエリには空応答)。`home.fips` は fips2go の「Mesh names」=端末ローカルの宛名帳でホスト npub → fd72:… にマップ
+
+**検証方法**
+
+- 端末側操作は `adb` 経由(アプリ起動・フィールド入力・uiautomator による画面要素取得・スクリーンショット)。Termux の `curl` で IPv6 リテラル・`npub….fips`・`home.fips` の 3 経路の到達性を先に確認
+- 成否の判定は常に**ホスト側サービスのログ**を正とした(murmur ログの `Authenticated`、ntfy の publish/deliver、baresip/プロキシの `REGISTER` 受信記録、fake receiver のリクエストログ)
+- 逆方向(ホスト→端末の着信)は fips2go の既定 deny インバウンドを許可ポートで開けて確認
 
 ### 主な出典
 
