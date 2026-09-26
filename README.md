@@ -35,6 +35,7 @@
 | [reports/11-browser-sensor-embedded.md](reports/11-browser-sensor-embedded.md) | ユースケース集D: ブラウザP2Pアプリ・センサー網・ロボット |
 | [reports/12-fips-or-nvpn.md](reports/12-fips-or-nvpn.md) | ユースケース集E: 「FIPSかnostr-vpnか」の判断・影のインターネット |
 | [reports/13-fips2go-android-apps.md](reports/13-fips2go-android-apps.md) | ユースケース集F: fips2go(Android) — 「任意アプリがメッシュの住人になる」活用法・nvpnにない切り口 |
+| [reports/14-router-mesh-and-fips-roaming.md](reports/14-router-mesh-and-fips-roaming.md) | ルーター自動メッシュ深掘り: 802.11s バックホール・`!FIPS` オープン SSID ローミング・5G ライク市民網の内部構造 |
 
 ## 結論の要約(TL;DR)
 
