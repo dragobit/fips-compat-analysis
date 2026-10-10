@@ -37,6 +37,10 @@
 | [reports/13-fips2go-android-apps.md](reports/13-fips2go-android-apps.md) | ユースケース集F: fips2go(Android) — 「任意アプリがメッシュの住人になる」活用法・nvpnにない切り口 |
 | [reports/14-router-mesh-and-fips-roaming.md](reports/14-router-mesh-and-fips-roaming.md) | ルーター自動メッシュ深掘り: 802.11s バックホール・`!FIPS` オープン SSID ローミング・5G ライク市民網の内部構造 |
 
+## 関連リポジトリ
+
+- [dragobit/fips-claude](https://github.com/dragobit/fips-claude): 本分析の採用判定を踏まえた実装事例。Happy Coder webapp(動的サイト)を「静的サイト＋FIPS」に変換し、ブラウザ内 fips-ts ノード → 同一オリジン `/fips` WSS → npub 許可リスト付きブリッジ → TCP → happy-server の経路で全通信を FIPS 化した記録。総括レポートはリポ内 `docs/fips-happy-case.md`
+
 ## 結論の要約(TL;DR)
 
 - **ワイヤー互換性は「ほぼ真」**。FMP/FSP v0 の全メッセージ型・ハンドシェイク・エンコード規則はコード上で一致。mmalmi 側の拡張(FSP msg 0x15–0x17、direct-FSP ヘッダフラグ 0x08、サービスポート 257、WebRTC/WebSocket トランスポート)はすべて後方互換にネゴシエートされ、本家ノードとの混在で通信は破壊されない。
